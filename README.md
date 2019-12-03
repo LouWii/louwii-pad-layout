@@ -1,5 +1,7 @@
 # louwii-pad-layout
 
+Tool to help create a layout for [Louwii-Pad](https://github.com/LouWii/louwii-pad) and generate the layout code from it (to be used in QMK).
+
 ## Project setup
 ```
 npm install

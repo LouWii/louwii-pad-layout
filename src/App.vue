@@ -11,8 +11,8 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-import EncoderList from './components/EncoderList'
-import LayersList from './components/LayersList'
+import EncoderList from '@/components/EncoderList'
+import LayersList from '@/components/LayersList'
 
 export default {
   name: 'app',
@@ -63,7 +63,7 @@ main {
 
 aside {
   background: #eee;
-  padding: .8rem;
+  padding: $global-margin 0;
   width: 250px;
 }
 </style>
