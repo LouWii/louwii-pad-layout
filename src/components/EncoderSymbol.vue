@@ -21,3 +21,13 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.encoder-symbol {
+  .icon-container {
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}
+</style>

@@ -1,6 +1,7 @@
 <template>
   <div class="layer-item">
-    <input type="text" v-model="layerName" />
+    <div class="layer-name">{{ layer.name }}</div>
+    <div class="layer-slug">{{ layer.slug }}</div>
   </div>
 </template>
 
@@ -30,6 +31,14 @@ export default {
 
   &:hover {
     background: #f7f7f7;
+  }
+
+  .layer-name {
+    margin-bottom: $global-margin-s;
+  }
+
+  .layer-slug {
+    font-size: $font-size-s;
   }
 }
 </style>

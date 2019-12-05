@@ -26,30 +26,16 @@ export default {
   beforeMount: function() {
     if (this.layers.length === 0) {
       this.generateNewLayer()
+      this.selectDefaultLayer()
     }
   },
   methods: {
-    ...mapActions(['generateNewLayer']),
+    ...mapActions(['generateNewLayer', 'selectDefaultLayer']),
   }
 }
 </script>
 
 <style lang="scss">
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-html {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  min-height: 100%;
-}
-
-body {
-  min-height: 100vh;
-}
 #app {
   color: #2c3e50;
 

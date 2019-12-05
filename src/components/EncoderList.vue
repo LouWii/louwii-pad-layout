@@ -1,19 +1,20 @@
 <template>
   <div class="encoder-list">
     <div class="encoders-container">
-      <encoder-symbol v-for="(encoder, index) in encoders" :key="index" :encoder="encoder" />
+      <encoder-symbol v-for="(encoder, index) in selectedEncoders" :key="index" :encoder="encoder" />
     </div>
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import EncoderSymbol from './EncoderSymbol'
 
 export default {
   name: 'EncoderList',
   components: {EncoderSymbol},
   computed: {
+    ...mapGetters(['selectedEncoders']),
     ...mapState({
       encoders: state => state.encoders,
     })
@@ -24,5 +25,14 @@ export default {
 <style lang="scss">
 .encoder-list {
 
+  .encoders-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .encoder-symbol {
+    flex-grow: 1;
+    width: 33%;
+  }
 }
 </style>

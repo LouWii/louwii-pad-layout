@@ -37,5 +37,21 @@ export default {
     margin-bottom: $global-margin;
     padding: 0 $global-margin;
   }
+
+  .layers-container {
+    margin-bottom: $global-margin;
+  }
+
+  .layer-item {
+    border-bottom: 1px solid #cecece;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .layers-actions {
+    text-align: center;
+  }
 }
 </style>
