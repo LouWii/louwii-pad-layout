@@ -15,7 +15,8 @@ export default new Vuex.Store({
     selectedLayerIndex: null,
   },
   getters: {
-    selectedEncoders: state => state.encoders[state.selectedLayerIndex]
+    selectedEncoders: state => state.encoders[state.selectedLayerIndex],
+    selectedLayer: state => state.layers[state.selectedLayerIndex],
   },
   actions: {
     generateNewLayer({commit, state}) {
@@ -37,6 +38,11 @@ export default new Vuex.Store({
     selectDefaultLayer({commit}) {
       commit(SELECT_LAYER, 0)
     },
+    selectLayerFromSlug({commit, state}, layerSlug) {
+      state.layers.forEach((layer, index) => {
+        if (layer.slug === layerSlug) commit(SELECT_LAYER, index)
+      })
+    }
   },
   mutations: {
     [ADD_NEW_LAYER] (state, newLayer) {

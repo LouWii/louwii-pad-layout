@@ -4,6 +4,7 @@
       <layers-list/>
     </aside>
     <main>
+      <layer-title/>
       <encoder-list/>
     </main>
   </div>
@@ -11,13 +12,15 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-import EncoderList from '@/components/EncoderList'
-import LayersList from '@/components/LayersList'
+import EncoderList from '@/components/Encoder/EncoderList'
+import LayerTitle from '@/components/Layer/LayerTitle'
+import LayersList from '@/components/Layer/LayersList'
 
 export default {
   name: 'app',
   components: {
     EncoderList,
+    LayerTitle,
     LayersList,
   },
   computed: {
@@ -45,6 +48,7 @@ export default {
 
 main {
   flex: 1;
+  padding: $global-padding-l;
 }
 
 aside {

@@ -12,7 +12,7 @@
 
 <script>
 import {mapActions, mapState} from 'vuex'
-import LayerItem from '@/components/LayerItem'
+import LayerItem from '@/components/Layer/LayerItem'
 
 export default {
   name: 'LayersList',
