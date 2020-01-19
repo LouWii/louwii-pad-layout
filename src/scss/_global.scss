@@ -1,4 +1,5 @@
 @import './config';
+@import './mixins';
 
 * {
   box-sizing: border-box;
@@ -20,9 +21,7 @@ body {
 
 button {
   background: #fff;
-  border-style: solid;
-  border-radius: 5px;
-  border-width: 1px;
+  @include form-field-base;
   cursor: pointer;
   display: inline-block;
   padding: $global-padding-s;
@@ -35,4 +34,9 @@ button {
     &:hover {
       background: #f9f9f9;
     }
+}
+
+select {
+  @include form-field-base;
+  padding: .375rem .75rem;
 }

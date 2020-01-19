@@ -28,11 +28,13 @@ export default {
   .encoders-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .encoder-symbol {
-    flex-grow: 1;
-    width: 33%;
+    flex-grow: 0;
+    margin-bottom: 1rem;
+    width: calc(100% / 3 - .8rem);
   }
 }
 </style>

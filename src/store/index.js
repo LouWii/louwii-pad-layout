@@ -26,6 +26,10 @@ export default new Vuex.Store({
         newEncoders.push({
           index: i,
           type: null,
+          clockwiseActionType: null,
+          clockwiseAction: null,
+          ctrclockwiseActionType: null,
+          ctrclockwiseAction: null,
         })
         i++
       }

@@ -1,0 +1,5 @@
+@mixin form-field-base {
+  border-style: $form-field-border-type;
+  border-radius: $form-field-border-radius;
+  border-width: $form-field-border-width;
+}
