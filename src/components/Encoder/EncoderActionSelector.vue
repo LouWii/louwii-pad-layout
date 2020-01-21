@@ -1,6 +1,7 @@
 <template>
   <div class="encoder-action-selector">
     <div class="selector">
+      <label>Action Type</label>
       <select @change="onTypeChange">
         <option value="">Select action type</option>
         <option v-for="(mapItem) in Array.from(actionTypes)" :key="mapItem[0]" :value="mapItem[0]">
@@ -17,10 +18,11 @@
 <script>
 import {actionTypes} from '@/lib/encoderActions'
 import KeyPress from '@/components/EncoderAction/KeyPress'
+import MidiControlChange from '@/components/EncoderAction/MidiControlChange'
 
 export default {
   name: 'EncoderActionSelector',
-  components: {KeyPress},
+  components: {KeyPress, MidiControlChange},
   data: () => {
     return {
       actionTypes,
@@ -45,7 +47,10 @@ export default {
 <style lang="scss">
 .encoder-action-selector {
   .selector {
+    margin-top: $global-margin;
+
     select {
+      margin-bottom: $global-margin;
       width: 100%;
     }
   }

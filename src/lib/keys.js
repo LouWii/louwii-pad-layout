@@ -31,9 +31,7 @@ export const keys = {
     { name: 'z', code: 'KC_Z', keys: 'z' },
   ],
 
-  // Specials chars
-  special: [
-    { name: '~ `', code: 'KC_GRV', keys: '`' },
+  numbers: [
     { name: '! 1', code: 'KC_1', keys: '1' },
     { name: '@ 2', code: 'KC_2', keys: '2' },
     { name: '# 3', code: 'KC_3', keys: '3' },
@@ -44,40 +42,49 @@ export const keys = {
     { name: '* 8', code: 'KC_8', keys: '8' },
     { name: '( 9', code: 'KC_9', keys: '9' },
     { name: ') 0', code: 'KC_0', keys: '0' },
-    { name: '_ -', code: 'KC_MINS', keys: '-' },
-    { name: '+ =', code: 'KC_EQL', keys: '=' },
-    { name: '{ [', code: 'KC_LBRC', keys: '[' },
-    { name: '} ]', code: 'KC_RBRC', keys: ']' },
-    { name: '| \\', code: 'KC_BSLS', keys: '\\' },
-    { name: ': ;', code: 'KC_SCLN', keys: ';' },
-    { name: '" \'', code: 'KC_QUOT', keys: "'" },
-    { name: '< ,', code: 'KC_COMM', keys: ',' },
-    { name: '> .', code: 'KC_DOT', keys: '.' },
-    { name: '? /', code: 'KC_SLSH', keys: '/' },
   ],
 
-  modifiers: [
+  punctuation: [
     { name: 'Esc', code: 'KC_ESC', keys: 'esc' },
     { name: 'Back Space', code: 'KC_BSPC', keys: 'backspace' },
     { name: 'Enter', code: 'KC_ENT', keys: 'enter' },
     { name: 'Tab', code: 'KC_TAB', keys: 'tab' },
     { name: 'Space', code: 'KC_SPC', keys: 'space' },
+    { name: '_ -', code: 'KC_MINS', keys: '-' },
+    { name: '+ =', code: 'KC_EQL', keys: '=' },
+    { name: '{ [', code: 'KC_LBRC', keys: '[' },
+    { name: '} ]', code: 'KC_RBRC', keys: ']' },
+    { name: '| \\', code: 'KC_BSLS', keys: '\\' },
+    { name: 'Non-US # and ~', code: 'KC_NUHS' },
+    { name: ': ;', code: 'KC_SCLN', keys: ';' },
+    { name: '" \'', code: 'KC_QUOT', keys: "'" },
+    { name: '~ `', code: 'KC_GRV', keys: '`' },
+    { name: '< ,', code: 'KC_COMM', keys: ',' },
+    { name: '> .', code: 'KC_DOT', keys: '.' },
+    { name: '? /', code: 'KC_SLSH', keys: '/' },
+    { name: 'Non-US \\ and |', code: 'KC_NUBS' },
+  ],
+
+  modifiers: [
     { name: 'Caps Lock', code: 'KC_CAPS', keys: 'caps_lock' },
     { name: 'Left Shift', code: 'KC_LSFT', keys: 'shift' },
     { name: 'Right Shift', code: 'KC_RSFT' },
     { name: 'Left Ctrl', code: 'KC_LCTL', keys: 'ctrl' },
+    { name: 'Right Ctrl', code: 'KC_RCTL' },
     { name: 'Left OS', code: 'KC_LGUI', keys: 'cmd' },
+    { name: 'Right OS', code: 'KC_RGUI' },
     { name: 'Left Alt', code: 'KC_LALT', keys: 'alt' },
     { name: 'Right Alt', code: 'KC_RALT' },
-    { name: 'Right OS', code: 'KC_RGUI' },
-    { name: 'Menu', code: 'KC_APP'},
-    { name: 'Right Ctrl', code: 'KC_RCTL' },
+  ],
+
+  commands: [
     { name: 'Insert', code: 'KC_INS', keys: 'insert' },
     { name: 'Del', code: 'KC_DEL', keys: 'delete' },
     { name: 'Home', code: 'KC_HOME', keys: 'home' },
     { name: 'End', code: 'KC_END', keys: 'end' },
     { name: 'Page Up', code: 'KC_PGUP', keys: 'pageup' },
     { name: 'Page Down', code: 'KC_PGDN', keys: 'pagedown' },
+    { name: 'Menu', code: 'KC_APP'},
   ],
 
   arrows: [
@@ -157,5 +164,6 @@ export const keys = {
     { name: '+', code: 'KC_PPLS', keys: 'num_add' },
     { name: ',', code: 'KC_PCMM' },
     { name: '=', code: 'KC_PEQL' },
+    { name: 'Numpad Enter', code: 'KC_PENT' },
   ],
 }
