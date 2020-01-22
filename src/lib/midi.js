@@ -1,4 +1,4 @@
-export const midiControlChange = new Map([
+export const midiControlChangeTypes = new Map([
   [0, {controlNum: 0, controlNumBin: "00000000", controlNumHex: "00", desc: "Bank Select", valueDesc: "0-127"}],
   [1, {controlNum: 1, controlNumBin: "00000001", controlNumHex: "01", desc: "Modulation Wheel or Lever", valueDesc: "0-127"}],
   [2, {controlNum: 2, controlNumBin: "00000010", controlNumHex: "02", desc: "Breath Controller", valueDesc: "0-127"}],

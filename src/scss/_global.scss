@@ -1,6 +1,8 @@
 @import './config';
 @import './mixins';
 
+@import './tooltip';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -39,4 +41,12 @@ button {
 select {
   @include form-field-base;
   padding: .375rem .75rem;
+}
+
+p {
+  margin-bottom: $global-margin;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
