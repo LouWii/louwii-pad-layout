@@ -22,17 +22,20 @@
               <strong>Custom Value</strong> Enter a custom value (from 0 to 127). This value will always be used when you turn the encoder in the given direction.
             </p>
             <p>
-              <strong>Automatic increase</strong> Starts with a value of 0, will increment everytime the encoder is turned. Max value is 127. The value is shared between clockwise and counterclockwise actions, so you can do <i>Automatic increase</i> one way and <i>Automatic decrease</i> the other way.
+              <strong>Automatic increase</strong> Starts with a value of 0, will increment everytime the encoder is turned. Max value is 127. The value is shared between clockwise and counterclockwise actions, so you can do <em>Automatic increase</em> one way and <em>Automatic decrease</em> the other way.
             </p>
             <p>
-              <strong>Automatic decrease</strong> Same as <i>Automatic increase</i> but will decrement the value (minimum value is 0).
+              <strong>Automatic decrease</strong> Same as <em>Automatic increase</em> but will decrement the value (minimum value is 0).
             </p>
           </template>
         </v-popover>
       </div>
       <div v-if="showValueField" class="value-input-container">
-        <input v-model="midiControlChangeManualValue" placeholder="0 - 127" />
+        <input v-model="midiControlChangeManualValue" :placeholder="placeholderValueField" />
       </div>
+      <p v-if="displayValueFieldRule">
+        This control change type values are specific: <em>{{ valueFieldRule }}</em>
+      </p>
     </div>
   </div>
 </template>
@@ -59,7 +62,16 @@ export default {
     },
     showValueField: function() {
       return this.midiControlChange !== null && (this.midiControlChangeValueChangeType === 'manual' || !this.showValueType)
-    }
+    },
+    placeholderValueField: function() {
+      return (this.selectedControlChange && this.selectedControlChange.valueDesc === '0-127') ? '0-127' : 'Custom value'
+    },
+    displayValueFieldRule: function() {
+      return this.midiControlChange !== null &&  !(this.selectedControlChange && this.selectedControlChange.valueDesc === '0-127')
+    },
+    valueFieldRule: function() {
+      return this.selectedControlChange ? this.selectedControlChange.valueDesc : ''
+    },
   },
 }
 </script>

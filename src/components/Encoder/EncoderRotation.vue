@@ -1,6 +1,6 @@
 <template>
   <div :class="['encoder-rotation', directionString]">
-    <h4>{{ directionString }}</h4>
+    <h3>{{ directionString }}</h3>
     <encoder-action-selector/>
   </div>
 </template>
@@ -25,3 +25,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.encoder-rotation {
+  h3 {
+    text-transform: capitalize;
+  }
+}
+</style>
