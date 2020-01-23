@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 import EncoderRotation from '@/components/Encoder/EncoderRotation'
 
 export default {
@@ -20,7 +21,10 @@ export default {
     encoder: {
       required: true,
       type: Object,
-    }
+    },
+  },
+  methods: {
+    ...mapActions(['updateEncoderAction'])
   }
 }
 </script>
