@@ -1,7 +1,7 @@
 <template>
   <div :class="['encoder-rotation', directionString]">
     <h3>{{ directionString }}</h3>
-    <encoder-action-selector/>
+    <encoder-action-selector @typeChange="onTypeChange" @actionChange="onActionChange" />
   </div>
 </template>
 
@@ -22,7 +22,15 @@ export default {
     directionString: function() {
       return this.clockwise ? 'clockwise' : 'counterclockwise'
     }
-  }
+  },
+  methods: {
+    onTypeChange: function(actionType) {
+      this.$emit('typeChange', actionType)
+    },
+    onActionChange: function(action) {
+      this.$emit('actionChange', action)
+    }
+  },
 }
 </script>
 

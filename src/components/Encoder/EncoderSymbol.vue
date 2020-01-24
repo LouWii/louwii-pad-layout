@@ -4,8 +4,8 @@
       <img src="https://cdn.sparkfun.com//assets/parts/1/3/5/2/8/15141-Rotary_Encoder_-_Illuminated__RGB_-01.jpg" alt="rotary encoder image" />
     </div>
     <div class="encoder-setup">
-      <encoder-rotation/>
-      <encoder-rotation :clockwise="false"/>
+      <encoder-rotation @typeChange="onClockwiseTypeChange" @actionChange="onClockwiseActionChange" />
+      <encoder-rotation :clockwise="false" @typeChange="onCounterclockwiseTypeChange" @actionChange="onCounterclockwiseActionChange" />
     </div>
   </div>
 </template>
@@ -24,7 +24,33 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['updateEncoderAction'])
+    ...mapActions(['updateEncoderAction', 'updateEncoderActionType']),
+    onClockwiseActionChange(action) {
+      this.updateAction('clockwise', action)
+    },
+    onClockwiseTypeChange(actionType) {
+      this.updateActionType('clockwise', actionType)
+    },
+    onCounterclockwiseActionChange(action) {
+      this.updateAction('counterclockwise', action)
+    },
+    onCounterclockwiseTypeChange(actionType) {
+      this.updateActionType('counterclockwise', actionType)
+    },
+    updateAction(rotation, action) {
+      this.updateEncoderAction({
+        index: this.encoder.index,
+        rotation,
+        action
+      })
+    },
+    updateActionType(rotation, actionType) {
+      this.updateEncoderActionType({
+        index: this.encoder.index,
+        rotation,
+        actionType
+      })
+    },
   }
 }
 </script>

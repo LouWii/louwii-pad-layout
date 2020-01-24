@@ -10,7 +10,7 @@
       </select>
     </div>
     <div class="action">
-      <component :is="currentAction"/>
+      <component :is="currentAction" @change="onActionChange"/>
     </div>
   </div>
 </template>
@@ -36,10 +36,12 @@ export default {
   },
   methods: {
     onTypeChange(event) {
-      /*eslint no-console: 0*/
-      console.log(event.target.value)
       this.selectedAction = event.target.value
-    }
+      this.$emit('typeChange', this.selectedAction)
+    },
+    onActionChange(action) {
+      this.$emit('actionChange', action)
+    },
   },
 }
 </script>

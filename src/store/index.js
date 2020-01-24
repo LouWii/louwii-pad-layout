@@ -7,6 +7,7 @@ const ADD_NEW_LAYER = 'addNewLayer'
 const ADD_ENCODERS = 'addEncoders'
 const SELECT_LAYER = 'selectLayer'
 const UPDATE_ENCODER_ACTION = 'updateEncoderAction'
+const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
 
 export default new Vuex.Store({
   state: {
@@ -28,15 +29,16 @@ export default new Vuex.Store({
       const newEncoders = []
       let i = 0
       let encoderLayer = state.layers.length
+      let encoderIndexOffset = state.encoders.length
       while (i < state.encodersNb) {
         newEncoders.push({
-          index: i,
+          index: i + encoderIndexOffset,
           layerIndex: encoderLayer,
           type: null,
           clockwiseActionType: null,
           clockwiseAction: null,
-          ctrclockwiseActionType: null,
-          ctrclockwiseAction: null,
+          counterclockwiseActionType: null,
+          counterclockwiseAction: null,
         })
         i++
       }
@@ -54,14 +56,12 @@ export default new Vuex.Store({
         if (layer.slug === layerSlug) commit(SELECT_LAYER, index)
       })
     },
-    /**
-     * 
-     * @param {*} param0 
-     * @param {Object} partialEncoder {index: 0, rotation: 'clockwise', actionType: '', action: {}}
-     */
-    updateEncoderAction({commit}, partialEncoder) {
-      commit(UPDATE_ENCODER_ACTION, partialEncoder)
+    updateEncoderAction({commit}, {index, rotation, action}) {
+      commit(UPDATE_ENCODER_ACTION, {index, rotation, action})
     },
+    updateEncoderActionType({commit}, {index, rotation, actionType}) {
+      commit(UPDATE_ENCODER_ACTION_TYPE, {index, rotation, actionType})
+    }
   },
   mutations: {
     [ADD_NEW_LAYER] (state, newLayer) {
@@ -73,24 +73,25 @@ export default new Vuex.Store({
     [SELECT_LAYER] (state, layerIndex) {
       state.selectedLayerIndex = layerIndex
     },
-    [UPDATE_ENCODER_ACTION] (state, partialEncoder) {
-      const curEncoderIndex = state.encoders.findIndex(enc => {
-        return enc.layerIndex === state.selectedLayerIndex && enc.index === partialEncoder.index
-      })
-      if (curEncoderIndex !== -1) {
-        let curEncoder = state.encoders[curEncoderIndex]
-        if (partialEncoder.rotation === 'clockwise') {
-          curEncoder.clockwiseActionType = partialEncoder.actionType
-          curEncoder.clockwiseAction = partialEncoder.action
+    [UPDATE_ENCODER_ACTION] (state, {index, rotation, action}) {
+        let curEncoder = state.encoders[index]
+        if (rotation === 'clockwise') {
+          curEncoder.clockwiseAction = action
         } else {
-          curEncoder.clockwiseActionType = partialEncoder.actionType
-          curEncoder.clockwiseAction = partialEncoder.action
+          curEncoder.counterclockwiseAction = action
         }
-        Vue.set(state.encoders, curEncoderIndex, curEncoder)
+        Vue.set(state.encoders, index, curEncoder)
+    },
+    [UPDATE_ENCODER_ACTION_TYPE] (state, {index, rotation, actionType}) {
+      let curEncoder = state.encoders[index]
+      if (rotation === 'clockwise') {
+        curEncoder.clockwiseActionType = actionType
+        curEncoder.clockwiseAction = null //reset the action data (if the user messed up, too bad!)
       } else {
-        /*eslint no-console: 0*/
-        console.error(`Tried to update encoder ${partialEncoder.index} on layer ${state.selectedLayerIndex} but was not found`)
+        curEncoder.counterclockwiseActionType = actionType
+        curEncoder.counterclockwiseAction = null //reset the action data (if the user messed up, too bad!)
       }
+      Vue.set(state.encoders, index, curEncoder)
     }
   },
   modules: {
