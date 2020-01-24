@@ -1,7 +1,12 @@
 <template>
   <div :class="['encoder-rotation', directionString]">
     <h3>{{ directionString }}</h3>
-    <encoder-action-selector @typeChange="onTypeChange" @actionChange="onActionChange" />
+    <encoder-action-selector
+      @typeChange="onTypeChange"
+      @actionChange="onActionChange"
+      :actionType="actionType"
+      :action="action"
+      />
   </div>
 </template>
 
@@ -16,7 +21,17 @@ export default {
       type: Boolean,
       required: false,
       default: true
-    }
+    },
+    actionType: {
+      validator: function(value) {
+        return typeof value === 'string' || value === null
+      }
+    },
+    action: {
+      validator: function(value) {
+        return typeof value === 'object' || value === null
+      }
+    },
   },
   computed: {
     directionString: function() {

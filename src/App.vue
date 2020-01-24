@@ -52,7 +52,7 @@ main {
 }
 
 aside {
-  background: #eee;
+  background: #eaeaea;
   padding: $global-margin 0;
   width: 250px;
 }

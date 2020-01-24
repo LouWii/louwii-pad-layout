@@ -50,6 +50,13 @@ import {keyPressTypes} from '@/lib/encoderActions'
 
 export default {
   name: 'KeyPress',
+  props: {
+    action: {
+      validator: function(value) {
+        return typeof value === 'object' || value === null
+      }
+    },
+  },
   data: () => {
     return {
       currentKeyPressType: null,
@@ -58,13 +65,27 @@ export default {
       keyPressTypes,
     }
   },
+  //TODO: add beforeMount or other to properly update currentKeyPressType and currentKeyPress
   watch: {
+    action: {
+      handler: function() {
+        /*eslint no-console: 0*/
+        console.log(this.action)
+        if (this.action.keyPressed !== this.currentKeyPressed) {
+          this.currentKeyPressed = this.action.keyPressed
+        }
+        if (this.action.keyPressType !== this.currentKeyPressType) {
+          this.currentKeyPressType = this.action.keyPressType
+        }
+      },
+      deep: true,
+    },
     currentKeyPressType: function() {
       this.$emit('change', {keyPressType: this.currentKeyPressType, keyPressed: this.currentKeyPressed})
     },
     currentKeyPressed: function() {
       this.$emit('change', {keyPressType: this.currentKeyPressType, keyPressed: this.currentKeyPressed})
-    }
+    },
   },
 }
 </script>

@@ -4,8 +4,19 @@
       <img src="https://cdn.sparkfun.com//assets/parts/1/3/5/2/8/15141-Rotary_Encoder_-_Illuminated__RGB_-01.jpg" alt="rotary encoder image" />
     </div>
     <div class="encoder-setup">
-      <encoder-rotation @typeChange="onClockwiseTypeChange" @actionChange="onClockwiseActionChange" />
-      <encoder-rotation :clockwise="false" @typeChange="onCounterclockwiseTypeChange" @actionChange="onCounterclockwiseActionChange" />
+      <encoder-rotation
+        @typeChange="onClockwiseTypeChange"
+        @actionChange="onClockwiseActionChange"
+        :actionType="encoder.clockwiseActionType"
+        :action="encoder.clockwiseAction"
+        />
+      <encoder-rotation
+        :clockwise="false"
+        @typeChange="onCounterclockwiseTypeChange"
+        @actionChange="onCounterclockwiseActionChange"
+        :actionType="encoder.counterclockwiseActionType"
+        :action="encoder.counterclockwiseAction"
+        />
     </div>
   </div>
 </template>

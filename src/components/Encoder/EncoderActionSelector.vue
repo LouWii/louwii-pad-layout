@@ -2,7 +2,7 @@
   <div class="encoder-action-selector">
     <div class="selector">
       <label>Action Type</label>
-      <select @change="onTypeChange">
+      <select v-model="currentAction">
         <option value="">Select action type</option>
         <option v-for="(mapItem) in Array.from(actionTypes)" :key="mapItem[0]" :value="mapItem[0]">
           {{ mapItem[1] }}
@@ -10,7 +10,7 @@
       </select>
     </div>
     <div class="action">
-      <component :is="currentAction" @change="onActionChange"/>
+      <component :is="currentAction" @change="onActionChange" :action="action" />
     </div>
   </div>
 </template>
@@ -23,24 +23,45 @@ import MidiControlChange from '@/components/EncoderAction/MidiControlChange'
 export default {
   name: 'EncoderActionSelector',
   components: {KeyPress, MidiControlChange},
+  props: {
+    actionType: {
+      validator: function(value) {
+        return typeof value === 'string' || value === null
+      }
+    },
+    action: {
+      validator: function(value) {
+        return typeof value === 'object' || value === null
+      }
+    },
+  },
   data: () => {
     return {
       actionTypes,
-      selectedAction: null,
+      currentAction: '',
     }
   },
   computed: {
-    currentAction: function() {
-      return this.selectedAction
-    },
   },
   methods: {
-    onTypeChange(event) {
-      this.selectedAction = event.target.value
-      this.$emit('typeChange', this.selectedAction)
-    },
     onActionChange(action) {
       this.$emit('actionChange', action)
+    },
+  },
+  watch: {
+    actionType: function() {
+      if (this.actionType !== null) {
+        if (this.actionType !== this.currentAction) {
+          this.currentAction = this.actionType
+        }
+      } else if (this.currentAction !== '') {
+        this.currentAction = ''
+      }
+    },
+    currentAction: function() {
+      if (this.actionType !== this.currentAction) {
+        this.$emit('typeChange', this.currentAction)
+      }
     },
   },
 }

@@ -1,12 +1,12 @@
 <template>
-  <div class="layer-item" @click.prevent="selectLayerFromSlug(layer.slug)">
+  <div :class="[{active: isSelected}, 'layer-item']" @click.prevent="selectLayerFromSlug(layer.slug)">
     <div class="layer-name">{{ layer.name }}</div>
     <div class="layer-slug">{{ layer.slug }}</div>
   </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'LayerItem',
@@ -19,6 +19,12 @@ export default {
   data: function() {
     return {
       layerName: '',
+    }
+  },
+  computed: {
+    ...mapGetters(['selectedLayer']),
+    isSelected: function() {
+      return this.selectedLayer.slug === this.layer.slug
     }
   },
   beforeMount: function() {
@@ -36,6 +42,10 @@ export default {
   padding: $global-margin;
 
   &:hover {
+    background: #f0f0f0;
+  }
+
+  &.active {
     background: #f7f7f7;
   }
 
