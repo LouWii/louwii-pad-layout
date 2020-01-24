@@ -2,7 +2,7 @@
   <div class="midi-control-change">
     <div class="control-change-selector-container">
       <label>Control Change Type</label>
-      <select class="control-type-selector" v-model="midiControlChange">
+      <select class="control-type-selector" v-model="currentMidiControlChangeType">
         <option v-for="mapItem in Array.from(midiControlChangeTypes)" :key="mapItem[0]" :value="mapItem[0]">
           {{ mapItem[0] }} - {{ mapItem[1].desc }}
         </option>
@@ -10,7 +10,7 @@
     </div>
     <div class="control-change-value-container">
       <div v-if="showValueType" class="value-type-container">
-        <select v-model="midiControlChangeValueChangeType">
+        <select v-model="currentMidiControlChangeValueChangeType">
           <option value="manual">Custom Value</option>
           <option value="autoIncrease">Automatic increase</option>
           <option value="autoDecrease">Automatic decrease</option>
@@ -31,7 +31,7 @@
         </v-popover>
       </div>
       <div v-if="showValueField" class="value-input-container">
-        <input v-model="midiControlChangeManualValue" :placeholder="placeholderValueField" />
+        <input type="number" min="0" max="127" v-model="currentMidiControlChangeManualValue" :placeholder="placeholderValueField" />
       </div>
       <p v-if="displayValueFieldRule">
         This control change type values are specific: <em>{{ valueFieldRule }}</em>
@@ -48,31 +48,54 @@ export default {
   data: () => {
     return {
       midiControlChangeTypes,
-      midiControlChange: null,
-      midiControlChangeValueChangeType: null,
-      midiControlChangeManualValue: null,
+      currentMidiControlChangeType: null,
+      currentMidiControlChangeValueChangeType: null,
+      currentMidiControlChangeManualValue: null,
     }
   },
   computed: {
     selectedControlChange: function() {
-      return this.midiControlChange !== null ? midiControlChangeTypes.get(this.midiControlChange) : null
+      return this.currentMidiControlChangeType !== null ? midiControlChangeTypes.get(this.currentMidiControlChangeType) : null
     },
     showValueType: function() {
       return this.selectedControlChange ? this.selectedControlChange.valueDesc === '0-127' : false
     },
     showValueField: function() {
-      return this.midiControlChange !== null && (this.midiControlChangeValueChangeType === 'manual' || !this.showValueType)
+      return this.currentMidiControlChangeType !== null && (this.currentMidiControlChangeValueChangeType === 'manual' || !this.showValueType)
     },
     placeholderValueField: function() {
       return (this.selectedControlChange && this.selectedControlChange.valueDesc === '0-127') ? '0-127' : 'Custom value'
     },
     displayValueFieldRule: function() {
-      return this.midiControlChange !== null &&  !(this.selectedControlChange && this.selectedControlChange.valueDesc === '0-127')
+      return this.currentMidiControlChangeType !== null &&  !(this.selectedControlChange && this.selectedControlChange.valueDesc === '0-127')
     },
     valueFieldRule: function() {
       return this.selectedControlChange ? this.selectedControlChange.valueDesc : ''
     },
   },
+  methods: {
+    emitChangeEvent: function() {
+      this.$emit(
+        'change',
+        {
+          midiControlChangeType: this.currentMidiControlChangeType,
+          midiControlChangeValueChangeType: this.currentMidiControlChangeValueChangeType,
+          midiControlChangeManualValue: parseInt(this.currentMidiControlChangeManualValue, 10),
+        }
+      )
+    }
+  },
+  watch: {
+    currentMidiControlChangeType: function() {
+      this.emitChangeEvent()
+    },
+    currentMidiControlChangeValueChangeType: function() {
+      this.emitChangeEvent()
+    },
+    currentMidiControlChangeManualValue: function() {
+      this.emitChangeEvent()
+    },
+  }
 }
 </script>
 
