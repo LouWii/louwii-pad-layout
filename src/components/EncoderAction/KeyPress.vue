@@ -3,6 +3,7 @@
     <div class="key-press-type-container">
       <label>Key press type:</label>
       <select v-model="currentKeyPressType">
+        <option value="">-- Select a key press type --</option>
         <option v-for="mapItem in Array.from(keyPressTypes)" :key="mapItem[0]" :value="mapItem[0]">
           {{ mapItem[1].name }}
         </option>
@@ -11,7 +12,7 @@
     <div class="key-press-container">
       <label>Key to be pressed</label>
       <select v-model="currentKeyPressed">
-        <option>Select key</option>
+        <option value="">-- Select key --</option>
         <optgroup label="Letters">
           <option v-for="(key, idx) in keys.letters" :key="idx" :value="key.code">{{ key.name }}</option>
         </optgroup>
@@ -61,8 +62,8 @@ export default {
   },
   data: () => {
     return {
-      currentKeyPressType: null,
-      currentKeyPressed: null,
+      currentKeyPressType: '',
+      currentKeyPressed: '',
       keys,
       keyPressTypes,
     }

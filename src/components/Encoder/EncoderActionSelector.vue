@@ -19,10 +19,11 @@
 import {actionTypes} from '@/lib/encoderActions'
 import KeyPress from '@/components/EncoderAction/KeyPress'
 import MidiControlChange from '@/components/EncoderAction/MidiControlChange'
+import RGBChange from '@/components/EncoderAction/RGBChange'
 
 export default {
   name: 'EncoderActionSelector',
-  components: {KeyPress, MidiControlChange},
+  components: {KeyPress, MidiControlChange, RGBChange},
   props: {
     actionType: {
       validator: function(value) {

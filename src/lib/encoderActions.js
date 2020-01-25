@@ -17,3 +17,24 @@ export const keyPressTypes = new Map([
   ['ctrlShiftAltKeyPress', {name: 'Control + Shift + Alt + Key Press', desc: 'Presses Ctrl + Shift + Alt + selected key'}],
   ['ctrlShiftAltWinKeyPress', {name: 'Control + Shift + Alt + Win (GUI) + Key Press', desc: 'Presses Ctrl + Shift + Alt + Win + selected key'}],
 ])
+
+export const rgbActionTypes = new Map([
+  ['RGB_TOG', {name: 'RGB_TOG', desc: 'Toggle RGB lighting on or off'}],
+  ['RGB_MODE_FORWARD', {name: 'RGB_MODE_FORWARD', desc: 'Cycle through modes'}],
+  ['RGB_MODE_REVERSE', {name: 'RGB_MODE_REVERSE', desc: 'Cycle through modes in reverse'}],
+  ['RGB_HUI', {name: 'RGB_HUI', desc: 'Increase hue'}],
+  ['RGB_HUD', {name: 'RGB_HUD', desc: 'Decrease hue'}],
+  ['RGB_SAI', {name: 'RGB_SAI', desc: 'Increase saturation'}],
+  ['RGB_SAD', {name: 'RGB_SAD', desc: 'Decrease saturation'}],
+  ['RGB_VAI', {name: 'RGB_VAI', desc: 'Increase value (brightness)'}],
+  ['RGB_VAD', {name: 'RGB_VAD', desc: 'Decrease value (brightness)'}],
+  ['RGB_MODE_PLAIN', {name: 'RGB_MODE_PLAIN', desc: 'Static (no animation) mode'}],
+  ['RGB_MODE_BREATHE', {name: 'RGB_MODE_BREATHE', desc: 'Breathing animation mode'}],
+  ['RGB_MODE_RAINBOW', {name: 'RGB_MODE_RAINBOW', desc: 'Rainbow animation mode'}],
+  ['RGB_MODE_SWIRL', {name: 'RGB_MODE_SWIRL', desc: 'Swirl animation mode'}],
+  ['RGB_MODE_SNAKE', {name: 'RGB_MODE_SNAKE', desc: 'Snake animation mode'}],
+  ['RGB_MODE_KNIGHT', {name: 'RGB_MODE_KNIGHT', desc: '"Knight Rider" animation mode'}],
+  ['RGB_MODE_XMAS', {name: 'RGB_MODE_XMAS', desc: 'Christmas animation mode'}],
+  ['RGB_MODE_GRADIENT', {name: 'RGB_MODE_GRADIENT', desc: 'Static gradient animation mode'}],
+  ['RGB_MODE_RGBTEST', {name: 'RGB_MODE_RGBTEST', desc: 'Red, Green, Blue test animation mode'}],
+])

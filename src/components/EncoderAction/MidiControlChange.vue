@@ -1,5 +1,5 @@
 <template>
-  <div class="midi-control-change">
+  <div class="action-midi-control-change">
     <div class="control-change-selector-container">
       <label>Control Change Type</label>
       <select class="control-type-selector" v-model="currentMidiControlChangeType">
@@ -119,7 +119,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .midi-control-change {
+  .action-midi-control-change {
     .control-type-selector {
       max-width: 100%;
     }
