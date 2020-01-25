@@ -43,13 +43,11 @@ export default {
   },
   computed: {
   },
-  methods: {
-    onActionChange(action) {
-      this.$emit('actionChange', action)
-    },
+  beforeMount() {
+    this.initData()
   },
-  watch: {
-    actionType: function() {
+  methods: {
+    initData() {
       if (this.actionType !== null) {
         if (this.actionType !== this.currentAction) {
           this.currentAction = this.actionType
@@ -57,6 +55,14 @@ export default {
       } else if (this.currentAction !== '') {
         this.currentAction = ''
       }
+    },
+    onActionChange(action) {
+      this.$emit('actionChange', action)
+    },
+  },
+  watch: {
+    actionType: function() {
+      this.initData()
     },
     currentAction: function() {
       if (this.actionType !== this.currentAction) {

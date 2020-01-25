@@ -62,7 +62,7 @@ export default {
         actionType
       })
     },
-  }
+  },
 }
 </script>
 
@@ -75,7 +75,7 @@ export default {
 
     img {
       max-height: 100%;
-      max-width: 200px;
+      max-width: 150px;
     }
   }
 

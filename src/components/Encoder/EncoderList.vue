@@ -1,7 +1,7 @@
 <template>
   <div class="encoder-list">
     <div class="encoders-container">
-      <encoder-symbol v-for="(encoder, index) in selectedEncoders" :key="index" :encoder="encoder" />
+      <encoder-symbol v-for="encoder in selectedEncoders" :key="encoder.index" :encoder="encoder" />
     </div>
   </div>
 </template>

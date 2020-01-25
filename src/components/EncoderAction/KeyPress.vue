@@ -47,9 +47,11 @@
 <script>
 import {keys} from '@/lib/keys'
 import {keyPressTypes} from '@/lib/encoderActions'
+import {encoderActionMixin} from '@/lib/encoderActionMixin'
 
 export default {
   name: 'KeyPress',
+  mixins: [encoderActionMixin],
   props: {
     action: {
       validator: function(value) {
@@ -65,26 +67,29 @@ export default {
       keyPressTypes,
     }
   },
-  //TODO: add beforeMount or other to properly update currentKeyPressType and currentKeyPress
+  beforeMount() {
+    this.initData()
+  },
+  methods: {
+    emitChangeEvent() {
+      this.$emit('change', {keyPressType: this.currentKeyPressType, keyPressed: this.currentKeyPressed})
+    },
+    initData() {
+      this.initValues(['keyPressed', 'keyPressType'])
+    },
+  },
   watch: {
     action: {
-      handler: function() {
-        /*eslint no-console: 0*/
-        console.log(this.action)
-        if (this.action.keyPressed !== this.currentKeyPressed) {
-          this.currentKeyPressed = this.action.keyPressed
-        }
-        if (this.action.keyPressType !== this.currentKeyPressType) {
-          this.currentKeyPressType = this.action.keyPressType
-        }
+      handler() {
+        this.initData()
       },
       deep: true,
     },
-    currentKeyPressType: function() {
-      this.$emit('change', {keyPressType: this.currentKeyPressType, keyPressed: this.currentKeyPressed})
+    currentKeyPressType() {
+      this.checkForEvent('keyPressType')
     },
-    currentKeyPressed: function() {
-      this.$emit('change', {keyPressType: this.currentKeyPressType, keyPressed: this.currentKeyPressed})
+    currentKeyPressed() {
+      this.checkForEvent('keyPressed')
     },
   },
 }

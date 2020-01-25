@@ -42,9 +42,18 @@
 
 <script>
 import {midiControlChangeTypes} from '@/lib/midi'
+import {encoderActionMixin} from '@/lib/encoderActionMixin'
 
 export default {
   name: 'MidiControlChange',
+  mixins: [encoderActionMixin],
+  props: {
+    action: {
+      validator: function(value) {
+        return typeof value === 'object' || value === null
+      }
+    },
+  },
   data: () => {
     return {
       midiControlChangeTypes,
@@ -73,27 +82,37 @@ export default {
       return this.selectedControlChange ? this.selectedControlChange.valueDesc : ''
     },
   },
+  beforeMount() {
+    this.initData()
+  },
   methods: {
-    emitChangeEvent: function() {
+    emitChangeEvent() {
+      let manualValue = this.currentMidiControlChangeManualValue
+      if (manualValue !== null && manualValue !== '' && !isNaN(manualValue)) {
+        manualValue = parseInt(manualValue, 10)
+      }
       this.$emit(
         'change',
         {
           midiControlChangeType: this.currentMidiControlChangeType,
           midiControlChangeValueChangeType: this.currentMidiControlChangeValueChangeType,
-          midiControlChangeManualValue: parseInt(this.currentMidiControlChangeManualValue, 10),
+          midiControlChangeManualValue: manualValue,
         }
       )
-    }
+    },
+    initData() {
+      this.initValues(['midiControlChangeType', 'midiControlChangeValueChangeType', 'midiControlChangeManualValue'])
+    },
   },
   watch: {
     currentMidiControlChangeType: function() {
-      this.emitChangeEvent()
+      this.checkForEvent('midiControlChangeType')
     },
     currentMidiControlChangeValueChangeType: function() {
-      this.emitChangeEvent()
+      this.checkForEvent('midiControlChangeValueChangeType')
     },
     currentMidiControlChangeManualValue: function() {
-      this.emitChangeEvent()
+      this.checkForEvent('midiControlChangeManualValue')
     },
   }
 }
