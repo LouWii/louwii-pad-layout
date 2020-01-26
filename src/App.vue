@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <layer-modal/>
     <aside>
       <layers-list/>
     </aside>
@@ -15,13 +16,15 @@ import {mapActions, mapState} from 'vuex'
 import EncoderList from '@/components/Encoder/EncoderList'
 import LayerTitle from '@/components/Layer/LayerTitle'
 import LayersList from '@/components/Layer/LayersList'
+import LayerModal from '@/components/Layer/LayerModal'
 
 export default {
   name: 'app',
   components: {
     EncoderList,
-    LayerTitle,
     LayersList,
+    LayerModal,
+    LayerTitle,
   },
   computed: {
     ...mapState(['layers', 'encodersNb'])

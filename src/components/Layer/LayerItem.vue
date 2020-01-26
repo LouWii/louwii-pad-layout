@@ -1,7 +1,8 @@
 <template>
-  <div :class="[{active: isSelected}, 'layer-item']" @click.prevent="selectLayerFromSlug(layer.slug)">
+  <div :class="[{active: isSelected}, 'layer-item']" @click.prevent="selectLayer(layer.index)">
     <div class="layer-name">{{ layer.name }}</div>
     <div class="layer-slug">{{ layer.slug }}</div>
+    <div class="layer-edit"><button title="edit" @click.stop="editLayer(layer.index)">📝</button></div>
   </div>
 </template>
 
@@ -24,14 +25,14 @@ export default {
   computed: {
     ...mapGetters(['selectedLayer']),
     isSelected: function() {
-      return this.selectedLayer.slug === this.layer.slug
+      return this.selectedLayer.index === this.layer.index
     }
   },
   beforeMount: function() {
     this.layerName = this.layer.name
   },
   methods: {
-    ...mapActions(['selectLayerFromSlug'])
+    ...mapActions(['editLayer', 'selectLayer'])
   }
 }
 </script>
@@ -40,6 +41,7 @@ export default {
 .layer-item {
   cursor: pointer;
   padding: $global-margin;
+  position: relative;
 
   &:hover {
     background: #f0f0f0;
@@ -55,6 +57,12 @@ export default {
 
   .layer-slug {
     font-size: $font-size-s;
+  }
+
+  .layer-edit {
+    position: absolute;
+    top: $global-margin;
+    right: $global-margin;
   }
 }
 </style>

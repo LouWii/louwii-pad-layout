@@ -2,7 +2,7 @@
   <div class="layers-list">
     <h3>Layers</h3>
     <div class="layers-container">
-      <layer-item v-for="(layer, index) in layers" :key="index" :layer="layer" />
+      <layer-item v-for="layer in layers" :key="layer.index" :layer="layer" />
     </div>
     <div class="layers-actions">
       <button type="button" @click.prevent="addLayerClick">Add Layer</button>

@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import layerEditModal from './modules/layerEditModal'
+
 Vue.use(Vuex)
 
 const ADD_NEW_LAYER = 'addNewLayer'
 const ADD_ENCODERS = 'addEncoders'
 const SELECT_LAYER = 'selectLayer'
+const SHOW_LAYER_EDIT_MODAL = 'showLayerEditModal'
 const UPDATE_ENCODER_ACTION = 'updateEncoderAction'
 const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
 
@@ -17,18 +20,24 @@ export default new Vuex.Store({
     selectedLayerIndex: null,
   },
   getters: {
+    getLayer: state => layerIndex => state.layers.find(lay => lay.index === layerIndex),
     selectedEncoders: state => state.encoders.filter(enc => {
         return enc.layerIndex === (state.selectedLayerIndex !== null ? state.selectedLayerIndex : 0)
       }).sort((enc1, enc2) => {
         return enc1.index > enc2.index
       }),
-    selectedLayer: state => state.layers[state.selectedLayerIndex],
+    selectedLayer: state => state.layers.find(lay => lay.index === state.selectedLayerIndex),
+    nextLayerIndex: state => {
+      let maxIndex = 0
+      state.layers.forEach(lay => { if (lay.index > maxIndex) maxIndex = lay.index})
+      return maxIndex + 1
+    },
   },
   actions: {
-    generateNewLayer({commit, state}) {
+    generateNewLayer({commit, getters, state}) {
       const newEncoders = []
       let i = 0
-      let encoderLayer = state.layers.length
+      let encoderLayer = getters.nextLayerIndex
       let encoderIndexOffset = state.encoders.length
       while (i < state.encodersNb) {
         newEncoders.push({
@@ -44,24 +53,27 @@ export default new Vuex.Store({
       }
       commit(ADD_ENCODERS, newEncoders)
       commit(ADD_NEW_LAYER, {
-        name: 'Layer ' + state.layers.length,
-        slug: 'LYR' + state.layers.length,
+        name: 'Layer ' + getters.nextLayerIndex,
+        slug: 'LYR' + getters.nextLayerIndex,
+        index: getters.nextLayerIndex
       })
     },
-    selectDefaultLayer({commit}) {
-      commit(SELECT_LAYER, 0)
+    selectDefaultLayer({commit, state}) {
+      // select first layer of the array of layers
+      commit(SELECT_LAYER, state.layers.find(lay => lay !== undefined).index)
     },
-    selectLayerFromSlug({commit, state}, layerSlug) {
-      state.layers.forEach((layer, index) => {
-        if (layer.slug === layerSlug) commit(SELECT_LAYER, index)
-      })
+    selectLayer({commit}, layerIndex) {
+      commit(SELECT_LAYER, layerIndex)
+    },
+    showEditLayerModal({commit}, layerIndex) {
+      commit(SHOW_LAYER_EDIT_MODAL, layerIndex)
     },
     updateEncoderAction({commit}, {index, rotation, action}) {
       commit(UPDATE_ENCODER_ACTION, {index, rotation, action})
     },
     updateEncoderActionType({commit}, {index, rotation, actionType}) {
       commit(UPDATE_ENCODER_ACTION_TYPE, {index, rotation, actionType})
-    }
+    },
   },
   mutations: {
     [ADD_NEW_LAYER] (state, newLayer) {
@@ -95,5 +107,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    layerEditModal
   }
 })
