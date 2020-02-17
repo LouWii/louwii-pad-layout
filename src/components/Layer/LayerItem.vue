@@ -1,8 +1,15 @@
 <template>
   <div :class="[{active: isSelected}, 'layer-item']" @click.prevent="selectLayer(layer.index)">
-    <div class="layer-name">{{ layer.name }}</div>
-    <div class="layer-slug">{{ layer.slug }}</div>
-    <div class="layer-edit"><button title="edit" @click.stop="editLayer(layer.index)">📝</button></div>
+    <div class="layer-color-name">
+      <span class="layer-color" :style="{background: layer.color}"></span>
+      <span class="layer-name">{{ layer.name }}</span>
+    </div>
+    <div class="layer-slug">
+      {{ layer.slug }}
+    </div>
+    <div class="layer-edit">
+      <button title="edit" @click.stop="editLayer(layer.index)">📝</button>
+    </div>
   </div>
 </template>
 
@@ -19,7 +26,6 @@ export default {
   },
   data: function() {
     return {
-      layerName: '',
     }
   },
   computed: {
@@ -27,9 +33,6 @@ export default {
     isSelected: function() {
       return this.selectedLayer.index === this.layer.index
     }
-  },
-  beforeMount: function() {
-    this.layerName = this.layer.name
   },
   methods: {
     ...mapActions(['editLayer', 'selectLayer'])
@@ -51,8 +54,19 @@ export default {
     background: #f7f7f7;
   }
 
-  .layer-name {
+  .layer-color-name {
     margin-bottom: $global-margin-s;
+
+    .layer-color, .layer-name {
+      display: inline-block;
+    }
+
+    .layer-color {
+      border: 1px solid #fff;
+      height: 14px;
+      margin-right: $global-margin-s;
+      width: 14px;
+    }
   }
 
   .layer-slug {

@@ -1,0 +1,28 @@
+select {
+  @include form-field-base;
+  padding: .375rem .75rem;
+}
+
+input {
+  @include form-field-base;
+  padding: .375rem;
+  width: 100%;
+
+  &[type="color"] {
+    width: 100px;
+    height: 30px;
+  }
+}
+
+.form-row {
+  padding: $global-padding;
+
+  label {
+    display: block;
+    margin-bottom: $global-margin-s;
+  }
+}
+
+.form-actions-row {
+  padding: $global-padding;
+}

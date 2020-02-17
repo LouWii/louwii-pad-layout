@@ -8,9 +8,11 @@ Vue.use(Vuex)
 const ADD_NEW_LAYER = 'addNewLayer'
 const ADD_ENCODERS = 'addEncoders'
 const SELECT_LAYER = 'selectLayer'
-const SHOW_LAYER_EDIT_MODAL = 'showLayerEditModal'
 const UPDATE_ENCODER_ACTION = 'updateEncoderAction'
 const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
+const UPDATE_LAYER = 'updateLayer'
+
+const DEFAULT_LAYER_COLOR = '#123412'
 
 export default new Vuex.Store({
   state: {
@@ -55,7 +57,8 @@ export default new Vuex.Store({
       commit(ADD_NEW_LAYER, {
         name: 'Layer ' + getters.nextLayerIndex,
         slug: 'LYR' + getters.nextLayerIndex,
-        index: getters.nextLayerIndex
+        index: getters.nextLayerIndex,
+        color: DEFAULT_LAYER_COLOR,
       })
     },
     selectDefaultLayer({commit, state}) {
@@ -65,14 +68,14 @@ export default new Vuex.Store({
     selectLayer({commit}, layerIndex) {
       commit(SELECT_LAYER, layerIndex)
     },
-    showEditLayerModal({commit}, layerIndex) {
-      commit(SHOW_LAYER_EDIT_MODAL, layerIndex)
-    },
     updateEncoderAction({commit}, {index, rotation, action}) {
       commit(UPDATE_ENCODER_ACTION, {index, rotation, action})
     },
     updateEncoderActionType({commit}, {index, rotation, actionType}) {
       commit(UPDATE_ENCODER_ACTION_TYPE, {index, rotation, actionType})
+    },
+    updateLayer({commit}, {index, name, slug, color}) {
+      commit(UPDATE_LAYER, {index, name, slug, color})
     },
   },
   mutations: {
@@ -104,7 +107,15 @@ export default new Vuex.Store({
         curEncoder.counterclockwiseAction = null //reset the action data (if the user messed up, too bad!)
       }
       Vue.set(state.encoders, index, curEncoder)
-    }
+    },
+    [UPDATE_LAYER] (state, {index, name, slug, color}) {
+      const curLayerIndex = state.layers.findIndex(l => l.index === index)
+      let curLayer = state.layers[curLayerIndex]
+      curLayer.name = name
+      curLayer.slug = slug
+      curLayer.color = color
+      Vue.set(state.layers, curLayerIndex, curLayer)
+    },
   },
   modules: {
     layerEditModal

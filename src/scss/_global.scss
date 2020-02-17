@@ -1,6 +1,7 @@
 @import './config';
 @import './mixins';
 
+@import './form';
 @import './tooltip';
 
 * {
@@ -36,11 +37,6 @@ button {
     &:hover {
       background: #f9f9f9;
     }
-}
-
-select {
-  @include form-field-base;
-  padding: .375rem .75rem;
 }
 
 p {
