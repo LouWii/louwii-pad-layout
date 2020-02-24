@@ -17,6 +17,8 @@ export default {
 
 <style lang="scss">
 .layer-title {
-
+  h1 {
+    margin-top: 0;
+  }
 }
 </style>

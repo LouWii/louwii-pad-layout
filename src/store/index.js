@@ -7,7 +7,12 @@ Vue.use(Vuex)
 
 const ADD_NEW_LAYER = 'addNewLayer'
 const ADD_ENCODERS = 'addEncoders'
+const DELETE_LAYER = 'deleteLayer'
+const DELETE_LAYER_ENCODERS = 'deleteLayerEncoders'
 const SELECT_LAYER = 'selectLayer'
+const SET_ENCODERS = 'setEncoder'
+const SET_ENCODERS_NB = 'setEncodersNb'
+const SET_LAYERS = 'setLayers'
 const UPDATE_ENCODER_ACTION = 'updateEncoderAction'
 const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
 const UPDATE_LAYER = 'updateLayer'
@@ -23,19 +28,25 @@ export default new Vuex.Store({
   },
   getters: {
     getLayer: state => layerIndex => state.layers.find(lay => lay.index === layerIndex),
+    jsonExport: state => JSON.stringify({layers: state.layers, encoders: state.encoders, encodersNb: state.encodersNb}),
+    nextLayerIndex: state => {
+      let maxIndex = 0
+      state.layers.forEach(lay => { if (lay.index > maxIndex) maxIndex = lay.index})
+      return maxIndex + 1
+    },
     selectedEncoders: state => state.encoders.filter(enc => {
         return enc.layerIndex === (state.selectedLayerIndex !== null ? state.selectedLayerIndex : 0)
       }).sort((enc1, enc2) => {
         return enc1.index > enc2.index
       }),
     selectedLayer: state => state.layers.find(lay => lay.index === state.selectedLayerIndex),
-    nextLayerIndex: state => {
-      let maxIndex = 0
-      state.layers.forEach(lay => { if (lay.index > maxIndex) maxIndex = lay.index})
-      return maxIndex + 1
-    },
   },
   actions: {
+    deleteLayerAndEncoders({commit, dispatch}, layerIndex) {
+      commit(DELETE_LAYER_ENCODERS, layerIndex)
+      commit(DELETE_LAYER, layerIndex)
+      dispatch('selectDefaultLayer')
+    },
     generateNewLayer({commit, getters, state}) {
       const newEncoders = []
       let i = 0
@@ -61,6 +72,22 @@ export default new Vuex.Store({
         color: DEFAULT_LAYER_COLOR,
       })
     },
+    importData({commit, dispatch}, jsonData) {
+      return new Promise((resolve, reject) => {
+        try {
+          // data is JSON string
+          const importedState = JSON.parse(jsonData)
+          commit(SET_LAYERS, importedState.layers)
+          commit(SET_ENCODERS, importedState.encoders)
+          commit(SET_ENCODERS_NB, importedState.encodersNb)
+          dispatch('selectDefaultLayer')
+          resolve()
+        } catch (e) {
+          reject()
+        }
+      })
+      
+    },
     selectDefaultLayer({commit, state}) {
       // select first layer of the array of layers
       commit(SELECT_LAYER, state.layers.find(lay => lay !== undefined).index)
@@ -85,8 +112,23 @@ export default new Vuex.Store({
     [ADD_ENCODERS] (state, encoders) {
       Vue.set(state, 'encoders', state.encoders.concat(encoders))
     },
+    [DELETE_LAYER] (state, layerIndex) {
+      state.layers = state.layers.filter(l => l.index !== layerIndex)
+    },
+    [DELETE_LAYER_ENCODERS] (state, layerIndex) {
+      state.encoders = state.encoders.filter(e => e.layerIndex !== layerIndex)
+    },
     [SELECT_LAYER] (state, layerIndex) {
       state.selectedLayerIndex = layerIndex
+    },
+    [SET_ENCODERS] (state, encoders) {
+      Vue.set(state, 'encoders', encoders)
+    },
+    [SET_ENCODERS_NB] (state, encodersNb) {
+      state.encodersNb = encodersNb
+    },
+    [SET_LAYERS] (state, layers) {
+      Vue.set(state, 'layers', layers)
     },
     [UPDATE_ENCODER_ACTION] (state, {index, rotation, action}) {
         let curEncoder = state.encoders[index]

@@ -25,4 +25,8 @@ input {
 
 .form-actions-row {
   padding: $global-padding;
+
+  button + button {
+    margin-left: $global-margin;
+  }
 }

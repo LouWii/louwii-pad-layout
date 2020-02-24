@@ -3,6 +3,7 @@
     <layer-modal/>
     <aside>
       <layers-list/>
+      <settings-actions />
     </aside>
     <main>
       <layer-title/>
@@ -17,6 +18,7 @@ import EncoderList from '@/components/Encoder/EncoderList'
 import LayerTitle from '@/components/Layer/LayerTitle'
 import LayersList from '@/components/Layer/LayersList'
 import LayerModal from '@/components/Layer/LayerModal'
+import SettingsActions from '@/components/SettingsActions'
 
 export default {
   name: 'app',
@@ -25,6 +27,7 @@ export default {
     LayersList,
     LayerModal,
     LayerTitle,
+    SettingsActions,
   },
   computed: {
     ...mapState(['layers', 'encodersNb'])

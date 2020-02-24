@@ -16,6 +16,7 @@
       </div>
       <div class="form-actions-row">
         <button type="button" @click="onSaveLayer">Save</button>
+        <button type="button" @click="onDeleteLayer">Delete</button>
       </div>
     </div>
   </vmodal>
@@ -41,12 +42,16 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['closeModal', 'updateLayer']),
+    ...mapActions(['closeModal', 'deleteLayerAndEncoders', 'updateLayer']),
     modalClosed() {
       this.layerNameEdit = ''
       this.layerSlugEdit = ''
       this.layerColorEdit = ''
       this.closeModal()
+    },
+    onDeleteLayer() {
+      this.closeModal()
+      this.deleteLayerAndEncoders(this.layerIndex)
     },
     onSaveLayer() {
       this.updateLayer({
