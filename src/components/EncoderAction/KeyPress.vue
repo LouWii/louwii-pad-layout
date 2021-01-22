@@ -40,6 +40,9 @@
         <optgroup label="Numpad">
           <option v-for="(key, idx) in keys.numpad" :key="idx" :value="key.code">{{ key.name }}</option>
         </optgroup>
+        <optgroup label="Multimedia">
+          <option v-for="(key, idx) in keys.media" :key="idx" :value="key.code">{{ key.name }}</option>
+        </optgroup>
       </select>
     </div>
   </div>

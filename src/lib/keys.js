@@ -166,4 +166,25 @@ export const keys = {
     { name: '=', code: 'KC_PEQL' },
     { name: 'Numpad Enter', code: 'KC_PENT' },
   ],
+
+  media: [
+    { name: 'Previous', code: 'KC_MPRV', title: 'Previous Track' },
+    { name: 'Next', code: 'KC_MNXT', title: 'Next Track' },
+    { name: 'Mute', code: 'KC_MUTE', title: 'Mute Audio' },
+    { name: 'Vol -', code: 'KC_VOLD', title: 'Volume Down' },
+    { name: 'Vol +', code: 'KC_VOLU', title: 'Volume Up' },
+    { name: 'Media Stop', code: 'KC_MSTP', title: 'Media Stop' },
+    { name: 'Play', code: 'KC_MPLY', title: 'Play/Pause' },
+    {
+      name: 'Prev Track',
+      code: 'KC_MRWD',
+      title: 'Previous Track / Rewind (macOS)'
+    },
+    {
+      name: 'Next Track',
+      code: 'KC_MFFD',
+      title: 'Next Track / Fast Forward (macOS)'
+    },
+    { name: 'Eject', code: 'KC_EJCT', title: 'Eject (macOS)' },
+  ],
 }
