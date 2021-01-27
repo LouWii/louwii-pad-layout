@@ -1,7 +1,7 @@
 <template>
   <div :class="['encoder-rotation', directionString]">
     <h3>{{ directionString }}</h3>
-    <encoder-action-selector
+    <item-action-selector
       @typeChange="onTypeChange"
       @actionChange="onActionChange"
       :actionType="actionType"
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import EncoderActionSelector from '@/components/Encoder/EncoderActionSelector'
+import ItemActionSelector from '@/components/ItemAction/ItemActionSelector'
 
 export default {
   name: 'EncoderRotation',
-  components: {EncoderActionSelector},
+  components: {ItemActionSelector},
   props: {
     clockwise: {
       type: Boolean,

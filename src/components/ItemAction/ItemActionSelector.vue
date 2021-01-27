@@ -17,12 +17,12 @@
 
 <script>
 import {actionTypes} from '@/lib/encoderActions'
-import KeyPress from '@/components/EncoderAction/KeyPress'
-import MidiControlChange from '@/components/EncoderAction/MidiControlChange'
-import RGBChange from '@/components/EncoderAction/RGBChange'
+import KeyPress from '@/components/ItemAction/KeyPress'
+import MidiControlChange from '@/components/ItemAction/MidiControlChange'
+import RGBChange from '@/components/ItemAction/RGBChange'
 
 export default {
-  name: 'EncoderActionSelector',
+  name: 'ItemActionSelector',
   components: {KeyPress, MidiControlChange, RGBChange},
   props: {
     actionType: {

@@ -8,6 +8,7 @@
     <main>
       <layer-title/>
       <encoder-list/>
+      <key-list/>
     </main>
   </div>
 </template>
@@ -15,6 +16,7 @@
 <script>
 import {mapActions, mapState} from 'vuex'
 import EncoderList from '@/components/Encoder/EncoderList'
+import KeyList from '@/components/Key/KeyList'
 import LayerTitle from '@/components/Layer/LayerTitle'
 import LayersList from '@/components/Layer/LayersList'
 import LayerModal from '@/components/Layer/LayerModal'
@@ -24,10 +26,11 @@ export default {
   name: 'app',
   components: {
     EncoderList,
+    KeyList,
     LayersList,
     LayerModal,
     LayerTitle,
-    SettingsActions,
+    SettingsActions
   },
   computed: {
     ...mapState(['layers', 'encodersNb'])

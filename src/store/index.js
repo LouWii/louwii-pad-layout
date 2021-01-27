@@ -5,17 +5,20 @@ import layerEditModal from './modules/layerEditModal'
 
 Vue.use(Vuex)
 
-const ADD_NEW_LAYER = 'addNewLayer'
-const ADD_ENCODERS = 'addEncoders'
-const DELETE_LAYER = 'deleteLayer'
-const DELETE_LAYER_ENCODERS = 'deleteLayerEncoders'
-const SELECT_LAYER = 'selectLayer'
-const SET_ENCODERS = 'setEncoder'
-const SET_ENCODERS_NB = 'setEncodersNb'
-const SET_LAYERS = 'setLayers'
-const UPDATE_ENCODER_ACTION = 'updateEncoderAction'
+const ADD_NEW_LAYER              = 'addNewLayer'
+const ADD_ENCODERS               = 'addEncoders'
+const ADD_KEYS                   = 'addKeys'
+const DELETE_LAYER               = 'deleteLayer'
+const DELETE_LAYER_ENCODERS      = 'deleteLayerEncoders'
+const SELECT_LAYER               = 'selectLayer'
+const SET_ENCODERS               = 'setEncoder'
+const SET_ENCODERS_NB            = 'setEncodersNb'
+const SET_LAYERS                 = 'setLayers'
+const UPDATE_ENCODER_ACTION      = 'updateEncoderAction'
 const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
-const UPDATE_LAYER = 'updateLayer'
+const UPDATE_KEY_ACTION          = 'updateKeyAction'
+const UPDATE_KEY_ACTION_TYPE     = 'updateKeyActionType'
+const UPDATE_LAYER               = 'updateLayer'
 
 const DEFAULT_LAYER_COLOR = '#123412'
 
@@ -24,21 +27,38 @@ export default new Vuex.Store({
     layers: [],
     encoders: [],
     encodersNb: 6,
+    keys: [],
+    keyNb: 8,
     selectedLayerIndex: null,
   },
   getters: {
     getLayer: state => layerIndex => state.layers.find(lay => lay.index === layerIndex),
     jsonExport: state => JSON.stringify({layers: state.layers, encoders: state.encoders, encodersNb: state.encodersNb}),
+    nextEncoderIndex: state => {
+      let maxIndex = 0
+      state.encoders.forEach(enc => { if (enc.index > maxIndex) maxIndex = enc.index})
+      return maxIndex + 1
+    },
+    nextKeyIndex: state => {
+      let maxIndex = 0
+      state.keys.forEach(key => { if (key.index > maxIndex) maxIndex = key.index})
+      return maxIndex + 1
+    },
     nextLayerIndex: state => {
       let maxIndex = 0
       state.layers.forEach(lay => { if (lay.index > maxIndex) maxIndex = lay.index})
       return maxIndex + 1
     },
     selectedEncoders: state => state.encoders.filter(enc => {
-        return enc.layerIndex === (state.selectedLayerIndex !== null ? state.selectedLayerIndex : 0)
-      }).sort((enc1, enc2) => {
-        return enc1.index > enc2.index
-      }),
+      return enc.layerIndex === (state.selectedLayerIndex !== null ? state.selectedLayerIndex : 0)
+    }).sort((enc1, enc2) => {
+      return enc1.index > enc2.index
+    }),
+    selectedKeys: state => state.keys.filter(key => {
+      return key.layerIndex === (state.selectedLayerIndex !== null ? state.selectedLayerIndex : 0)
+    }).sort((key1, key2) => {
+      return key1.index > key2.index
+    }),
     selectedLayer: state => state.layers.find(lay => lay.index === state.selectedLayerIndex),
   },
   actions: {
@@ -50,12 +70,12 @@ export default new Vuex.Store({
     generateNewLayer({commit, getters, state}) {
       const newEncoders = []
       let i = 0
-      let encoderLayer = getters.nextLayerIndex
-      let encoderIndexOffset = state.encoders.length
+      let newLayerIndex = getters.nextLayerIndex
+      let encoderIndexOffset = getters.nextEncoderIndex
       while (i < state.encodersNb) {
         newEncoders.push({
           index: i + encoderIndexOffset,
-          layerIndex: encoderLayer,
+          layerIndex: newLayerIndex,
           type: null,
           clockwiseActionType: null,
           clockwiseAction: null,
@@ -64,7 +84,25 @@ export default new Vuex.Store({
         })
         i++
       }
+
       commit(ADD_ENCODERS, newEncoders)
+
+      const newKeys = [];
+      let keyIndexOffset = getters.nextKeyIndex
+      i = 0;
+      while (i < state.keyNb) {
+        newKeys.push({
+          index: i + keyIndexOffset,
+          layerIndex: newLayerIndex,
+          type: null,
+          actionType: null,
+          action: null,
+        })
+        i++
+      }
+
+      commit(ADD_KEYS, newKeys)
+      
       commit(ADD_NEW_LAYER, {
         name: 'Layer ' + getters.nextLayerIndex,
         slug: 'LYR' + getters.nextLayerIndex,
@@ -86,7 +124,6 @@ export default new Vuex.Store({
           reject()
         }
       })
-      
     },
     selectDefaultLayer({commit, state}) {
       // select first layer of the array of layers
@@ -101,6 +138,12 @@ export default new Vuex.Store({
     updateEncoderActionType({commit}, {index, rotation, actionType}) {
       commit(UPDATE_ENCODER_ACTION_TYPE, {index, rotation, actionType})
     },
+    updateKeyAction({commit}, {index, action}) {
+      commit(UPDATE_KEY_ACTION, {index, action})
+    },
+    updateKeyActionType({commit}, {index, actionType}) {
+      commit(UPDATE_KEY_ACTION_TYPE, {index, actionType})
+    },
     updateLayer({commit}, {index, name, slug, color}) {
       commit(UPDATE_LAYER, {index, name, slug, color})
     },
@@ -111,6 +154,9 @@ export default new Vuex.Store({
     },
     [ADD_ENCODERS] (state, encoders) {
       Vue.set(state, 'encoders', state.encoders.concat(encoders))
+    },
+    [ADD_KEYS] (state, keys) {
+      Vue.set(state, 'keys', state.keys.concat(keys))
     },
     [DELETE_LAYER] (state, layerIndex) {
       state.layers = state.layers.filter(l => l.index !== layerIndex)
@@ -131,16 +177,18 @@ export default new Vuex.Store({
       Vue.set(state, 'layers', layers)
     },
     [UPDATE_ENCODER_ACTION] (state, {index, rotation, action}) {
-        let curEncoder = state.encoders[index]
-        if (rotation === 'clockwise') {
-          curEncoder.clockwiseAction = action
-        } else {
-          curEncoder.counterclockwiseAction = action
-        }
-        Vue.set(state.encoders, index, curEncoder)
+      const curEncoderIndex = state.encoders.findIndex(enc => enc.index === index)
+      const curEncoder = state.encoders[curEncoderIndex]
+      if (rotation === 'clockwise') {
+        curEncoder.clockwiseAction = action
+      } else {
+        curEncoder.counterclockwiseAction = action
+      }
+      Vue.set(state.encoders, curEncoderIndex, curEncoder)
     },
     [UPDATE_ENCODER_ACTION_TYPE] (state, {index, rotation, actionType}) {
-      let curEncoder = state.encoders[index]
+      const curEncoderIndex = state.encoders.findIndex(enc => enc.index === index)
+      const curEncoder = state.encoders[curEncoderIndex]
       if (rotation === 'clockwise') {
         curEncoder.clockwiseActionType = actionType
         curEncoder.clockwiseAction = null //reset the action data (if the user messed up, too bad!)
@@ -148,7 +196,20 @@ export default new Vuex.Store({
         curEncoder.counterclockwiseActionType = actionType
         curEncoder.counterclockwiseAction = null //reset the action data (if the user messed up, too bad!)
       }
-      Vue.set(state.encoders, index, curEncoder)
+      Vue.set(state.encoders, curEncoderIndex, curEncoder)
+    },
+    [UPDATE_KEY_ACTION] (state, {index, action}) {
+      const curKeyIndex = state.keys.findIndex(key => key.index === index)
+      const curKey = state.keys[curKeyIndex]
+      curKey.action = action
+      Vue.set(state.keys, curKeyIndex, curKey)
+    },
+    [UPDATE_KEY_ACTION_TYPE] (state, {index, actionType}) {
+      const curKeyIndex = state.keys.findIndex(key => key.index === index)
+      const curKey = state.keys[curKeyIndex]
+      curKey.actionType = actionType
+      curKey.action = null //reset the action data
+      Vue.set(state.keys, curKeyIndex, curKey)
     },
     [UPDATE_LAYER] (state, {index, name, slug, color}) {
       const curLayerIndex = state.layers.findIndex(l => l.index === index)
