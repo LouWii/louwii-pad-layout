@@ -16,7 +16,7 @@ export default {
   name: 'SettingsActions',
   computed: {
     ...mapGetters(['jsonExport']),
-    ...mapState(['encoders', 'layers']),
+    ...mapState(['encoders', 'keys', 'layers']),
   },
   methods: {
     ...mapActions(['importData']),
@@ -27,7 +27,7 @@ export default {
       fileSave('louwii-pad-layout.json', this.jsonExport)
     },
     onGetQmkClick() {
-      codeGenerator(this.layers, this.encoders)
+      codeGenerator(this.layers, this.encoders, this.keys)
     },
     onImportClick() {
       this.$refs['import-file-input'].click()

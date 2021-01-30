@@ -13,11 +13,14 @@ const DELETE_LAYER_ENCODERS      = 'deleteLayerEncoders'
 const SELECT_LAYER               = 'selectLayer'
 const SET_ENCODERS               = 'setEncoder'
 const SET_ENCODERS_NB            = 'setEncodersNb'
+const SET_KEYS                   = 'setKeys'
+const SET_KEYS_NB                = 'setKeysNb'
 const SET_LAYERS                 = 'setLayers'
 const UPDATE_ENCODER_ACTION      = 'updateEncoderAction'
 const UPDATE_ENCODER_ACTION_TYPE = 'updateEncoderActionType'
 const UPDATE_KEY_ACTION          = 'updateKeyAction'
 const UPDATE_KEY_ACTION_TYPE     = 'updateKeyActionType'
+const UPDATE_KEY_KEY_CODE        = 'updateKeyKeyCode'
 const UPDATE_LAYER               = 'updateLayer'
 
 const DEFAULT_LAYER_COLOR = '#123412'
@@ -28,12 +31,12 @@ export default new Vuex.Store({
     encoders: [],
     encodersNb: 6,
     keys: [],
-    keyNb: 8,
+    keysNb: 8,
     selectedLayerIndex: null,
   },
   getters: {
     getLayer: state => layerIndex => state.layers.find(lay => lay.index === layerIndex),
-    jsonExport: state => JSON.stringify({layers: state.layers, encoders: state.encoders, encodersNb: state.encodersNb}),
+    jsonExport: state => JSON.stringify({layers: state.layers, encoders: state.encoders, encodersNb: state.encodersNb, keys: state.keys, keysNb: state.keysNb}),
     nextEncoderIndex: state => {
       let maxIndex = 0
       state.encoders.forEach(enc => { if (enc.index > maxIndex) maxIndex = enc.index})
@@ -90,13 +93,14 @@ export default new Vuex.Store({
       const newKeys = [];
       let keyIndexOffset = getters.nextKeyIndex
       i = 0;
-      while (i < state.keyNb) {
+      while (i < state.keysNb) {
         newKeys.push({
           index: i + keyIndexOffset,
           layerIndex: newLayerIndex,
           type: null,
           actionType: null,
           action: null,
+          keyCode: 'KC_NO',
         })
         i++
       }
@@ -116,8 +120,14 @@ export default new Vuex.Store({
           // data is JSON string
           const importedState = JSON.parse(jsonData)
           commit(SET_LAYERS, importedState.layers)
-          commit(SET_ENCODERS, importedState.encoders)
-          commit(SET_ENCODERS_NB, importedState.encodersNb)
+          if (importedState.encoders && importedState.encodersNb) {
+            commit(SET_ENCODERS, importedState.encoders)
+            commit(SET_ENCODERS_NB, importedState.encodersNb)
+          }
+          if (importedState.keys && importedState.keysNb) {
+            commit(SET_KEYS_NB, importedState.keysNb)
+            commit(SET_KEYS, importedState.keys)
+          }
           dispatch('selectDefaultLayer')
           resolve()
         } catch (e) {
@@ -143,6 +153,9 @@ export default new Vuex.Store({
     },
     updateKeyActionType({commit}, {index, actionType}) {
       commit(UPDATE_KEY_ACTION_TYPE, {index, actionType})
+    },
+    updateKeyKeyCode({commit}, {index, keyCode}) {
+      commit(UPDATE_KEY_KEY_CODE, {index, keyCode})
     },
     updateLayer({commit}, {index, name, slug, color}) {
       commit(UPDATE_LAYER, {index, name, slug, color})
@@ -172,6 +185,12 @@ export default new Vuex.Store({
     },
     [SET_ENCODERS_NB] (state, encodersNb) {
       state.encodersNb = encodersNb
+    },
+    [SET_KEYS] (state, keys) {
+      Vue.set(state, 'keys', keys)
+    },
+    [SET_KEYS_NB] (state, keysNb) {
+      state.keysNb = keysNb
     },
     [SET_LAYERS] (state, layers) {
       Vue.set(state, 'layers', layers)
@@ -209,6 +228,12 @@ export default new Vuex.Store({
       const curKey = state.keys[curKeyIndex]
       curKey.actionType = actionType
       curKey.action = null //reset the action data
+      Vue.set(state.keys, curKeyIndex, curKey)
+    },
+    [UPDATE_KEY_KEY_CODE] (state, {index, keyCode}) {
+      const curKeyIndex = state.keys.findIndex(key => key.index === index)
+      const curKey = state.keys[curKeyIndex]
+      curKey.keyCode = keyCode
       Vue.set(state.keys, curKeyIndex, curKey)
     },
     [UPDATE_LAYER] (state, {index, name, slug, color}) {

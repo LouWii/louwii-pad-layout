@@ -5,7 +5,7 @@
       <select v-model="currentAction">
         <option value="">Select action type</option>
         <option v-for="(mapItem) in Array.from(actionTypes)" :key="mapItem[0]" :value="mapItem[0]">
-          {{ mapItem[1] }}
+          {{ mapItem[1].name }}
         </option>
       </select>
     </div>

@@ -26,7 +26,7 @@ import {mapActions} from 'vuex'
 import EncoderRotation from '@/components/Encoder/EncoderRotation'
 
 export default {
-  name: 'EncoderSymbol',
+  name: 'EncoderItem',
   components: {EncoderRotation},
   props: {
     encoder: {
@@ -75,7 +75,7 @@ export default {
 
     img {
       max-height: 100%;
-      max-width: 150px;
+      max-width: 50px;
     }
   }
 
